@@ -21,7 +21,7 @@ it('builds and ships a valid envelope for a thrown exception', function (): void
     expect($t->sent)->toHaveCount(1);
     $env = $t->sent[0]['envelope'];
 
-    expect($env['schema_version'])->toBe('1.0')
+    expect($env['schema_version'])->toBe('1.1')
         ->and($env['event_id'])->toMatch('/^[0-9a-f-]{36}$/')
         ->and($env['runtime']['name'])->toBe('php')
         ->and($env['sdk']['name'])->toBe('g8scope-codeigniter')

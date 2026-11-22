@@ -1,7 +1,7 @@
 # g8scope — CodeIgniter 4 SDK
 
 A thin CodeIgniter 4 adapter over the runtime PHP SDK
-[`g8scope/php`](../bliptrace-php). It auto-captures uncaught exceptions, enriches
+[`bliptrace/php`](../bliptrace-php). It auto-captures uncaught exceptions, enriches
 them with request context, scrubs sensitive data, and ships an error envelope to
 the g8scope ingest API.
 
@@ -14,10 +14,10 @@ misconfigured or the ingest endpoint is slow, your app keeps serving.
 ## Installation
 
 ```bash
-composer require g8scope/codeigniter
+composer require bliptrace/codeigniter
 ```
 
-This pulls in `g8scope/php` (the runtime). The `codeigniter4/framework` is a
+This pulls in `bliptrace/php` (the runtime). The `codeigniter4/framework` is a
 peer of your application — this package only suggests it.
 
 ## Configuration
@@ -152,7 +152,7 @@ composer install
 composer test   # vendor/bin/pest
 ```
 
-The test suite runs standalone against `g8scope/php` and a `FakeTransport`; it
+The test suite runs standalone against `bliptrace/php` and a `FakeTransport`; it
 does **not** require booting CodeIgniter.
 
 ## Licence
