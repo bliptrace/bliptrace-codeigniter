@@ -47,13 +47,16 @@ class G8Scope extends BaseConfig
 Set values via `.env` (these override the matching properties at runtime):
 
 ```dotenv
-g8scope.enabled   = true
-g8scope.key       = your-project-ingest-key
-g8scope.endpoint  = https://ingest.scope.g8suite.com
-g8scope.environment = production
-g8scope.release   = 1.4.2
-g8scope.timeout   = 3
+bliptrace.enabled   = true
+bliptrace.key       = your-project-ingest-key
+bliptrace.endpoint  = https://ingest.scope.g8suite.com
+bliptrace.environment = production
+bliptrace.release   = 1.4.2
+bliptrace.timeout   = 3
 ```
+
+> **Deprecated:** the old `g8scope.*` keys are still read when the matching `bliptrace.*` key is
+> unset. The fallback will be removed in 2.0.
 
 `basePath` defaults to `ROOTPATH` inside CodeIgniter; it is used to flag in-app
 stack frames.

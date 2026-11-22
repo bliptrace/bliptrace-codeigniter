@@ -31,3 +31,25 @@ it('carries scrub keys and ignore lists through to the php config', function ():
     expect($php->ignoreExceptions)->toBe([LogicException::class])
         ->and($php->scrubKeys)->toBe(['password']);
 });
+
+// Stand-in for CodeIgniter's env() helper (reads $_ENV) so the override path runs.
+if (! function_exists('env')) {
+    function env(string $key, mixed $default = null): mixed
+    {
+        return $_ENV[$key] ?? $default;
+    }
+}
+
+it('reads bliptrace.* env, falls back to g8scope.*, then defaults', function (): void {
+    $_ENV['bliptrace.key'] = 'new-key';
+    $_ENV['g8scope.key'] = 'old-key';
+    $_ENV['g8scope.endpoint'] = 'http://old';
+
+    $config = new G8Scope;
+    unset($_ENV['bliptrace.key'], $_ENV['g8scope.key'], $_ENV['g8scope.endpoint']);
+
+    expect($config->key)->toBe('new-key')
+        ->and($config->endpoint)->toBe('http://old')
+        ->and($config->environment)->toBe('production')
+        ->and($config->timeout)->toBe(3);
+});

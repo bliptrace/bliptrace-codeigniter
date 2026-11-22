@@ -75,13 +75,13 @@ class G8Scope extends G8ScopeBase
     {
         // Allow env() overrides when running inside CodeIgniter.
         if (function_exists('env')) {
-            $this->enabled = (bool) env('g8scope.enabled', $this->enabled);
-            $this->key = env('g8scope.key', $this->key) ?: null;
-            $this->endpoint = (string) env('g8scope.endpoint', $this->endpoint);
-            $this->environment = (string) env('g8scope.environment', $this->environment);
-            $release = env('g8scope.release', $this->release);
+            $this->enabled = (bool) self::env('enabled', $this->enabled);
+            $this->key = self::env('key', $this->key) ?: null;
+            $this->endpoint = (string) self::env('endpoint', $this->endpoint);
+            $this->environment = (string) self::env('environment', $this->environment);
+            $release = self::env('release', $this->release);
             $this->release = $release !== null && $release !== '' ? (string) $release : null;
-            $this->timeout = (int) env('g8scope.timeout', $this->timeout);
+            $this->timeout = (int) self::env('timeout', $this->timeout);
         }
 
         if (defined('ROOTPATH') && $this->basePath === '') {
@@ -92,6 +92,12 @@ class G8Scope extends G8ScopeBase
         if (is_callable([get_parent_class($this), '__construct'])) {
             parent::__construct();
         }
+    }
+
+    /** `bliptrace.<name>`, else the deprecated `g8scope.<name>` (removed in 2.0), else $default. */
+    private static function env(string $name, mixed $default): mixed
+    {
+        return env('bliptrace.'.$name, env('g8scope.'.$name, $default));
     }
 
     /** Map this settings holder to the runtime PHP SDK config. */
