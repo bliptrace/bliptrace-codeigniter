@@ -1,7 +1,7 @@
 # g8scope — CodeIgniter 4 SDK
 
 A thin CodeIgniter 4 adapter over the runtime PHP SDK
-[`g8scope/php`](../g8scope-php). It auto-captures uncaught exceptions, enriches
+[`g8scope/php`](../bliptrace-php). It auto-captures uncaught exceptions, enriches
 them with request context, scrubs sensitive data, and ships an error envelope to
 the g8scope ingest API.
 
