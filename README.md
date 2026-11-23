@@ -38,7 +38,7 @@ class G8Scope extends BaseConfig
 
     public ?string $key = null; // overridden by env, see below
 
-    public string $endpoint = 'https://ingest.scope.g8suite.com';
+    public string $endpoint = 'https://ingest.bliptrace.com/v1/ingest';
 
     public string $environment = 'production';
 }
@@ -49,7 +49,7 @@ Set values via `.env` (these override the matching properties at runtime):
 ```dotenv
 bliptrace.enabled   = true
 bliptrace.key       = your-project-ingest-key
-bliptrace.endpoint  = https://ingest.scope.g8suite.com
+bliptrace.endpoint  = https://ingest.bliptrace.com/v1/ingest
 bliptrace.environment = production
 bliptrace.release   = 1.4.2
 bliptrace.timeout   = 3

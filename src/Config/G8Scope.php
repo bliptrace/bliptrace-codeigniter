@@ -30,8 +30,8 @@ class G8Scope extends G8ScopeBase
     /** Project ingest key (from the g8scope dashboard). */
     public ?string $key = null;
 
-    /** Ingest endpoint. The transport posts to {endpoint}/v1/ingest. */
-    public string $endpoint = 'https://ingest.scope.g8suite.com';
+    /** Ingest URL; a bare base URL also works (/v1/ingest is appended when missing). */
+    public string $endpoint = 'https://ingest.bliptrace.com/v1/ingest';
 
     /** Deployment environment label. */
     public string $environment = 'production';
