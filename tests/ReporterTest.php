@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use G8Scope\CodeIgniter\Reporter;
-use G8Scope\CodeIgniter\Tests\FakeTransport;
-use G8Scope\Php\Client;
-use G8Scope\Php\Config;
+use Bliptrace\CodeIgniter\Reporter;
+use Bliptrace\CodeIgniter\Tests\FakeTransport;
+use Bliptrace\Php\Client;
+use Bliptrace\Php\Config;
 
 function reporterWith(FakeTransport $t, ?Config $config = null, ?object $request = null): Reporter
 {
-    $config ??= new Config(key: 'k', endpoint: 'http://api', basePath: '/srv/app', sdkName: 'g8scope-codeigniter');
+    $config ??= new Config(key: 'k', endpoint: 'http://api', basePath: '/srv/app', sdkName: 'bliptrace-codeigniter');
 
     return new Reporter(new Client($config, $t), $request);
 }
@@ -24,7 +24,7 @@ it('builds and ships a valid envelope for a thrown exception', function (): void
     expect($env['schema_version'])->toBe('1.1')
         ->and($env['event_id'])->toMatch('/^[0-9a-f-]{36}$/')
         ->and($env['runtime']['name'])->toBe('php')
-        ->and($env['sdk']['name'])->toBe('g8scope-codeigniter')
+        ->and($env['sdk']['name'])->toBe('bliptrace-codeigniter')
         ->and($env['sdk']['version'])->not->toBeEmpty()
         ->and($env['exception']['type'])->toBe('RuntimeException')
         ->and($env['exception']['message'])->toBe('boom')

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace G8Scope\CodeIgniter\Tests;
+namespace Bliptrace\CodeIgniter\Tests;
 
-use G8Scope\Php\Transport\Transport;
+use Bliptrace\Php\Transport\Transport;
 
 /** Records every envelope handed to it instead of sending it. */
 final class FakeTransport implements Transport

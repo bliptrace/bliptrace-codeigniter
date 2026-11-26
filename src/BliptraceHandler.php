@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace G8Scope\CodeIgniter;
+namespace Bliptrace\CodeIgniter;
 
-use Config\G8Scope;
-use G8Scope\CodeIgniter\Config\G8Scope as G8ScopeConfig;
-use G8Scope\Php\Client;
+use Config\Bliptrace;
+use Bliptrace\CodeIgniter\Config\Bliptrace as BliptraceConfig;
+use Bliptrace\Php\Client;
 use Throwable;
 
 /**
@@ -14,19 +14,19 @@ use Throwable;
  *
  * Wire it from app/Config/Events.php so it sees every uncaught throwable:
  *
- *   use G8Scope\CodeIgniter\G8ScopeHandler;
- *   Events::on('pre_system', static fn () => G8ScopeHandler::register());
+ *   use Bliptrace\CodeIgniter\BliptraceHandler;
+ *   Events::on('pre_system', static fn () => BliptraceHandler::register());
  *
  * register() installs a PHP exception handler that reports, then re-delegates
  * to CI4's own handler so the framework still renders its error page. It never
  * throws into the host app.
  */
-final class G8ScopeHandler
+final class BliptraceHandler
 {
     private static ?Reporter $reporter = null;
 
     /** Build (and memoise) the reporter from config, returning null if unbuildable. */
-    public static function reporter(?G8ScopeConfig $config = null, ?object $request = null): ?Reporter
+    public static function reporter(?BliptraceConfig $config = null, ?object $request = null): ?Reporter
     {
         if (self::$reporter !== null) {
             return self::$reporter;
@@ -57,10 +57,10 @@ final class G8ScopeHandler
     }
 
     /**
-     * Install a global exception handler that reports to g8scope, then chains to
+     * Install a global exception handler that reports to Bliptrace, then chains to
      * the previous handler (CI4's) so normal error rendering is preserved.
      */
-    public static function register(?G8ScopeConfig $config = null, ?object $request = null): void
+    public static function register(?BliptraceConfig $config = null, ?object $request = null): void
     {
         try {
             self::reporter($config, $request);
@@ -83,23 +83,23 @@ final class G8ScopeHandler
         self::$reporter = null;
     }
 
-    private static function resolveConfig(): ?G8ScopeConfig
+    private static function resolveConfig(): ?BliptraceConfig
     {
-        // Prefer the application's own Config\G8Scope (loaded via CI4's config()).
+        // Prefer the application's own Config\Bliptrace (loaded via CI4's config()).
         if (function_exists('config')) {
-            $app = config('G8Scope');
-            if ($app instanceof G8ScopeConfig) {
+            $app = config('Bliptrace');
+            if ($app instanceof BliptraceConfig) {
                 return $app;
             }
         }
 
-        if (class_exists(G8Scope::class)) {
-            $app = new G8Scope;
-            if ($app instanceof G8ScopeConfig) {
+        if (class_exists(Bliptrace::class)) {
+            $app = new Bliptrace;
+            if ($app instanceof BliptraceConfig) {
                 return $app;
             }
         }
 
-        return new G8ScopeConfig;
+        return new BliptraceConfig;
     }
 }

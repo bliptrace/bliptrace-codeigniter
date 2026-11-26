@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use G8Scope\CodeIgniter\Config\G8Scope;
+use Bliptrace\CodeIgniter\Config\Bliptrace;
 
 it('maps the settings holder to a runtime php config', function (): void {
-    $config = new G8Scope;
+    $config = new Bliptrace;
     $config->key = 'abc';
     $config->endpoint = 'http://api';
     $config->environment = 'staging';
@@ -17,12 +17,12 @@ it('maps the settings holder to a runtime php config', function (): void {
         ->and($php->endpoint)->toBe('http://api')
         ->and($php->environment)->toBe('staging')
         ->and($php->basePath)->toBe('/srv/app')
-        ->and($php->sdkName)->toBe('g8scope-codeigniter')
+        ->and($php->sdkName)->toBe('bliptrace-codeigniter')
         ->and($php->enabled)->toBeTrue();
 });
 
 it('carries scrub keys and ignore lists through to the php config', function (): void {
-    $config = new G8Scope;
+    $config = new Bliptrace;
     $config->ignoreExceptions = [LogicException::class];
     $config->scrubKeys = ['password'];
 
@@ -40,12 +40,12 @@ if (! function_exists('env')) {
     }
 }
 
-it('reads bliptrace.* env, falls back to g8scope.*, then defaults', function (): void {
+it('reads bliptrace.* env, falls back to the legacy key, then defaults', function (): void {
     $_ENV['bliptrace.key'] = 'new-key';
     $_ENV['g8scope.key'] = 'old-key';
     $_ENV['g8scope.endpoint'] = 'http://old';
 
-    $config = new G8Scope;
+    $config = new Bliptrace;
     unset($_ENV['bliptrace.key'], $_ENV['g8scope.key'], $_ENV['g8scope.endpoint']);
 
     expect($config->key)->toBe('new-key')

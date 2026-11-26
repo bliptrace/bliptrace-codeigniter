@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use G8Scope\CodeIgniter\Context\RequestContext;
+use Bliptrace\CodeIgniter\Context\RequestContext;
 
 it('builds method and url from globals', function (): void {
     $server = [

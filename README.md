@@ -1,11 +1,11 @@
-# g8scope — CodeIgniter 4 SDK
+# Bliptrace — CodeIgniter 4 SDK
 
 A thin CodeIgniter 4 adapter over the runtime PHP SDK
 [`bliptrace/php`](../bliptrace-php). It auto-captures uncaught exceptions, enriches
 them with request context, scrubs sensitive data, and ships an error envelope to
-the g8scope ingest API.
+the Bliptrace ingest API.
 
-It is built to **never throw into your application** — if g8scope is
+It is built to **never throw into your application** — if Bliptrace is
 misconfigured or the ingest endpoint is slow, your app keeps serving.
 
 > The **project is never sent in the payload**. It is resolved server-side from
@@ -22,7 +22,7 @@ peer of your application — this package only suggests it.
 
 ## Configuration
 
-Create `app/Config/G8Scope.php` extending the adapter config so CodeIgniter's
+Create `app/Config/Bliptrace.php` extending the adapter config so CodeIgniter's
 `config()` discovers it:
 
 ```php
@@ -30,9 +30,9 @@ Create `app/Config/G8Scope.php` extending the adapter config so CodeIgniter's
 
 namespace Config;
 
-use G8Scope\CodeIgniter\Config\G8Scope as BaseConfig;
+use Bliptrace\CodeIgniter\Config\Bliptrace as BaseConfig;
 
-class G8Scope extends BaseConfig
+class Bliptrace extends BaseConfig
 {
     public bool $enabled = true;
 
@@ -55,9 +55,6 @@ bliptrace.release   = 1.4.2
 bliptrace.timeout   = 3
 ```
 
-> **Deprecated:** the old `g8scope.*` keys are still read when the matching `bliptrace.*` key is
-> unset. The fallback will be removed in 2.0.
-
 `basePath` defaults to `ROOTPATH` inside CodeIgniter; it is used to flag in-app
 stack frames.
 
@@ -70,14 +67,14 @@ Register a global exception handler early in the boot. In
 
 ```php
 use CodeIgniter\Events\Events;
-use G8Scope\CodeIgniter\G8ScopeHandler;
+use Bliptrace\CodeIgniter\BliptraceHandler;
 
 Events::on('pre_system', static function (): void {
-    G8ScopeHandler::register();
+    BliptraceHandler::register();
 });
 ```
 
-`register()` installs a `set_exception_handler` that reports to g8scope and then
+`register()` installs a `set_exception_handler` that reports to Bliptrace and then
 chains to CodeIgniter's own handler, so the framework still renders its normal
 error page.
 
@@ -90,7 +87,7 @@ explicitly:
 use CodeIgniter\Debug\BaseExceptionHandler;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use G8Scope\CodeIgniter\G8ScopeHandler;
+use Bliptrace\CodeIgniter\BliptraceHandler;
 use Throwable;
 
 class MyExceptionHandler extends BaseExceptionHandler
@@ -102,7 +99,7 @@ class MyExceptionHandler extends BaseExceptionHandler
         int $statusCode,
         int $exitCode
     ): void {
-        G8ScopeHandler::report($exception, $request);
+        BliptraceHandler::report($exception, $request);
 
         // ... your rendering / parent handling
     }
@@ -114,12 +111,12 @@ class MyExceptionHandler extends BaseExceptionHandler
 To report a caught exception yourself:
 
 ```php
-use G8Scope\CodeIgniter\G8ScopeHandler;
+use Bliptrace\CodeIgniter\BliptraceHandler;
 
 try {
     risky();
 } catch (\Throwable $e) {
-    G8ScopeHandler::report($e, service('request'));
+    BliptraceHandler::report($e, service('request'));
     // ... handle gracefully
 }
 ```
@@ -127,10 +124,10 @@ try {
 Or build a reporter directly:
 
 ```php
-use G8Scope\CodeIgniter\Reporter;
-use G8Scope\Php\Client;
+use Bliptrace\CodeIgniter\Reporter;
+use Bliptrace\Php\Client;
 
-$client   = new Client(config('G8Scope')->toPhpConfig());
+$client   = new Client(config('Bliptrace')->toPhpConfig());
 $reporter = new Reporter($client, service('request'));
 $reporter->capture($e);
 ```

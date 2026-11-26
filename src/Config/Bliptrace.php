@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace G8Scope\CodeIgniter\Config;
+namespace Bliptrace\CodeIgniter\Config;
 
 use CodeIgniter\Config\BaseConfig;
-use G8Scope\Php\Config as PhpConfig;
+use Bliptrace\Php\Config as PhpConfig;
 
 /**
- * CodeIgniter 4 settings holder for g8scope.
+ * CodeIgniter 4 settings holder for bliptrace.
  *
- * In a CodeIgniter app this lives at app/Config/G8Scope.php and extends
+ * In a CodeIgniter app this lives at app/Config/Bliptrace.php and extends
  * CodeIgniter\Config\BaseConfig so that env() overrides apply automatically.
  * To keep the adapter testable without booting the framework, we only extend
  * the CI4 base class when it is actually available — otherwise this is a plain
- * settings object. Either way it maps to G8Scope\Php\Config via toPhpConfig().
+ * settings object. Either way it maps to Bliptrace\Php\Config via toPhpConfig().
  */
 if (class_exists(BaseConfig::class)) {
-    abstract class G8ScopeBase extends BaseConfig {}
+    abstract class BliptraceBase extends BaseConfig {}
 } else {
-    abstract class G8ScopeBase {}
+    abstract class BliptraceBase {}
 }
 
-class G8Scope extends G8ScopeBase
+class Bliptrace extends BliptraceBase
 {
     /** Master kill switch — set false to disable all capture. */
     public bool $enabled = true;
 
-    /** Project ingest key (from the g8scope dashboard). */
+    /** Project ingest key (from the Bliptrace dashboard). */
     public ?string $key = null;
 
     /** Ingest URL; a bare base URL also works (/v1/ingest is appended when missing). */
@@ -94,7 +94,7 @@ class G8Scope extends G8ScopeBase
         }
     }
 
-    /** `bliptrace.<name>`, else the deprecated `g8scope.<name>` (removed in 2.0), else $default. */
+    /** `bliptrace.<name>`, else the deprecated legacy key, else $default. */
     private static function env(string $name, mixed $default): mixed
     {
         return env('bliptrace.'.$name, env('g8scope.'.$name, $default));
@@ -115,7 +115,7 @@ class G8Scope extends G8ScopeBase
             scrubKeys: $this->scrubKeys,
             basePath: $this->basePath,
             enabled: $this->enabled,
-            sdkName: 'g8scope-codeigniter',
+            sdkName: 'bliptrace-codeigniter',
             sdkVersion: '1.0.0',
         );
     }

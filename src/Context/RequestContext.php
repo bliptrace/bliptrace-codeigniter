@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace G8Scope\CodeIgniter\Context;
+namespace Bliptrace\CodeIgniter\Context;
 
 /**
  * Builds the envelope context from the current CodeIgniter 4 request.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace G8Scope\CodeIgniter;
+namespace Bliptrace\CodeIgniter;
 
-use G8Scope\CodeIgniter\Context\RequestContext;
-use G8Scope\Php\Client;
+use Bliptrace\CodeIgniter\Context\RequestContext;
+use Bliptrace\Php\Client;
 use Throwable;
 
 /**
